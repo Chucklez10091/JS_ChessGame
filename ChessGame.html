@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JS chess game</title>
+    <style type="text/css">
+        html,
+        body{
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            font-family: sans-serif;
+        }
+        div *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        #turn{
+            max-width: 450px;
+            max-height: 30px;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            float: left;
+            border-right: 5px;
+            border: 1px solid rgba(0, 0, 0);
+            border-style: inset;
+            text-align: center;
+            background: #fff;
+            transition: .85s linear;
+        }
+        .turnheigtlight{
+            background: #5cb85c !important;
+            color: #fff;
+        }
+        #game_frame{
+            max-height: 504px;
+            max-width: 504px;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            margin: 20px auto;
+        }
+        .row_id{
+            width: 100%;
+            height: 100%;
+            max-width: 50px;
+            max-height: 50px;
+            float: left;
+            margin: 3px;
+            padding: 15px 0 0 20px;
+        }
+        .gamecell{
+            border: 1px solid #00a4a2;
+            width: 100%;
+            height: 100%;
+            max-width: 50px;
+            max-height: 50px;
+            float: left;
+            margin: 3px;
+            transition: all 0.5s ease-in-out;
+            border-radius: 5px;
+            padding: 0 0 0 3px;
+            font-size: 30pt;
+            cursor: pointer;
+            z-index: 1;
+        }
+        .gamecell:hover{
+            color: #fff;
+            background: rgba(245, 209, 176, 0.7);
+        }
+    </style>
+</head>
+
+<body>
+<div class="game_frame">
+    <div id="turn">It's White's turn!</div>
+    <div class='row_id'>8</div>
+    <div class='gamecell' id="a8"></div>
+    <div class="gamecell black" id="b8"></div>
+    <div class='gamecell' id="c8"></div>
+    <div class="gamecell black" id="d8"></div>
+    <div class='gamecell' id="e8"></div>
+    <div class="gamecell black" id="f8"></div>
+    <div class='gamecell' id="g8"></div>
+    <div class="gamecell black" id="h8"></div>
+    <div class='row_id'>7</div>
+    <div class='gamecell' id="a7"></div>
+    <div class="gamecell black" id="b7"></div>
+    <div class='gamecell' id="c7"></div>
+    <div class="gamecell black" id="d7"></div>
+    <div class='gamecell' id="e7"></div>
+    <div class="gamecell black" id="f7"></div>
+    <div class='gamecell' id="g7"></div>
+    <div class="gamecell black" id="h7"></div>
+    <div class='row_id'>6</div>
+    <div class='gamecell' id="a6"></div>
+    <div class="gamecell black" id="b6"></div>
+    <div class='gamecell' id="c6"></div>
+    <div class="gamecell black" id="d6"></div>
+    <div class='gamecell' id="e6"></div>
+    <div class="gamecell black" id="f6"></div>
+    <div class='gamecell' id="g6"></div>
+    <div class="gamecell black" id="h6"></div>
+    <div class='row_id'>5</div>
+    <div class='gamecell' id="a5"></div>
+    <div class="gamecell black" id="b5"></div>
+    <div class='gamecell' id="c5"></div>
+    <div class="gamecell black" id="d5"></div>
+    <div class='gamecell' id="e5"></div>
+    <div class="gamecell black" id="f5"></div>
+    <div class='gamecell' id="g5"></div>
+    <div class="gamecell black" id="h5"></div>
+    <div class='row_id'>4</div>
+    <div class='gamecell' id="a4"></div>
+    <div class="gamecell black" id="b4"></div>
+    <div class='gamecell' id="c4"></div>
+    <div class="gamecell black" id="d4"></div>
+    <div class='gamecell' id="e4"></div>
+    <div class="gamecell black" id="f4"></div>
+    <div class='gamecell' id="g4"></div>
+    <div class="gamecell black" id="h4"></div>
+    <div class='row_id'>3</div>
+    <div class='gamecell' id="a3"></div>
+    <div class="gamecell black" id="b3"></div>
+    <div class='gamecell' id="c3"></div>
+    <div class="gamecell black" id="d3"></div>
+    <div class='gamecell' id="e3"></div>
+    <div class="gamecell black" id="f3"></div>
+    <div class='gamecell' id="g3"></div>
+    <div class="gamecell black" id="h3"></div>
+    <div class='row_id'>2</div>
+    <div class='gamecell' id="a2"></div>
+    <div class="gamecell black" id="b2"></div>
+    <div class='gamecell' id="c2"></div>
+    <div class="gamecell black" id="d2"></div>
+    <div class='gamecell' id="e2"></div>
+    <div class="gamecell black" id="f2"></div>
+    <div class='gamecell' id="g2"></div>
+    <div class="gamecell black" id="h2"></div>
+    <div class='row_id'>1</div>
+    <div class='gamecell' id="a1"></div>
+    <div class="gamecell black" id="b1"></div>
+    <div class='gamecell' id="c1"></div>
+    <div class="gamecell black" id="d1"></div>
+    <div class='gamecell' id="e1"></div>
+    <div class="gamecell black" id="f1"></div>
+    <div class='gamecell' id="g1"></div>
+    <div class="gamecell black" id="h1"></div>
+    <div class="row_id"></div>
+    <div class="col_id">a</div>
+    <div class="col_id">b</div>
+    <div class="col_id">c</div>
+    <div class="col_id">d</div>
+    <div class="col_id">e</div>
+    <div class="col_id">f</div>
+    <div class="col_id">g</div>
+    <div class="col_id">h</div>
+  </div>
+</div>
+</body>
+</html>
+</html>
