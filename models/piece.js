@@ -3,7 +3,7 @@
  * 
  * @class piece
  */
-class piece{
+export default class piece{
     pc_id;
     img;
     loc;

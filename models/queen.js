@@ -1,5 +1,8 @@
-class queen extends piece{
-    constructor(){
+import piece from "./piece.js";
+
+export default class queen extends piece{
+    constructor(color, pID, xy){
+        super(color, pID, xy);
         switch (this.color){
             case 'Black':
                 this.img = '../images/black-queen.png';

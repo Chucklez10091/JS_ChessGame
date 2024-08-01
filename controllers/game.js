@@ -1,7 +1,9 @@
-import { player } from "../models/player";
-import { piece } from "../models/piece";
+import player from "../models/player.js";
+//import { piece } from "../models/piece.js";
 
-class game {
+export default class game {
+    player1; player2;
+
     constructor(player1Name = 'White', player2Name = 'Black') {
         this.player1 = new player('White', player1Name);
         this.player2 = new player('Black', player2Name);
@@ -15,3 +17,4 @@ class game {
 
     }
 }
+
