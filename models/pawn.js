@@ -3,31 +3,41 @@ import piece from "./piece.js";
 export default class pawn extends piece{
     constructor(color, pID, xy){
         super(color, pID, xy);
-        switch (this.color){
-            case 'Black':
-                this.img = '../images/black-pawn.png';
-                break;
-            case 'White':
-                this.img = '../images/white-pawn.png';
-                break;
-            default:
-                throw new Error("did not find appropriate color!");
-        }
+        
+        this.img = (this.color === 'White') ? '../images/white-pawn.png' : '../images/black-pawn.png'
+        
+        this.initializeDivInfo();
     }
 
-    updateOptions(){
+    updateOptions(board){
         this.can_move = [];
-        this.can_move.push([this.loc[0], this.loc[1] + 1]);
-        if (!this.moved) this.can_move.push([this.loc[0], this.loc[1] + 2]);
-        
+        let direction = (this.color == 'White') ? 1 : -1;
+        let col = this.loc[0];
+        let row = parseInt(this.loc[1]);
+
+        let nextrw = row + direction;
+        if (board[(col + nextrw)] === null){
+            this.can_move.push(col + nextrw);
+            if (!this.moved) {
+                nextrw += direction;
+                if (board[col + nextrw] === null) {
+                    this.can_move.push(col + nextrw);    
+                }
+            }
+        }
     };
 
-    move(tar_loc){
-        this.updateOptions();
-        if (this.can_move.includes(tar_loc)) this.loc = tar_loc;
+    move(tar_loc, board){
+        this.updateOptions(board);
+        if (this.can_move.includes(tar_loc)) {
+            board[this.loc] = null;
+            this.loc = tar_loc;
+            board[this.loc] = this;
+        }
         this.moved = true;
-        if (this.loc[1] == 8 || this.loc[1] == 0){
-            
+        
+        if (this.loc[1] == '8' || this.loc[1] == '0'){
+            // TODO: call on promotion logic
         }
     }
 }

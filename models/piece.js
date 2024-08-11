@@ -11,6 +11,7 @@ export default class piece{
     moved;
     can_move;
     color;
+    divInfo;
 
     constructor(color, pID, xy) {
         if (this.constructor == piece) {
@@ -24,8 +25,26 @@ export default class piece{
         this.moved = false;
     }
 
-    updateOptions(){
-        throw new Error("Method 'updateOptions()' must be implemented.");
+    initializeDivInfo() {
+        if (!this.img) {
+            throw new Error("Subclass must initialize 'img' before calling initializeDivInfo.");
+        }
+
+        // Create a <div> container with a class and insert the image inside it
+        this.divInfo = $('<div>')
+            .addClass('chess-piece')
+            .attr('data-piece', this.pc_id);
+
+        // Create an <img> element and set its src attribute to the filepath
+        const imgElement = $('<img>').attr('src', this.img);
+        this.divInfo.append(imgElement);
+    }
+
+    updateOptions(board){
+        if (this.constructor == piece) {
+            throw new Error("Method 'updateOptions()' must be implemented.");
+        }
+        // TODO: check for pins
     }
 
     move(tar_loc){
