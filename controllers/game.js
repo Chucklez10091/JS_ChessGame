@@ -1,3 +1,4 @@
+import pawn from "../models/pawn.js";
 import player from "../models/player.js";
 //import { piece } from "../models/piece.js";
 
@@ -6,6 +7,10 @@ export default class game {
     selectedpiece;
     currentPlayer;
     board = {};
+    last_move = {
+        piece: null,        
+        targetPosition: null  
+    };
     moveOptions = [];
 
     constructor(player1Name = 'White', player2Name = 'Black') {
@@ -19,7 +24,7 @@ export default class game {
         this.player1 = new player('White', player1Name, this.board);
         this.player2 = new player('Black', player2Name, this.board);
         this.currentPlayer = this.player1;
-        // console.log(this.board);
+        console.log(this.board);
     }
     
     start() {
@@ -37,9 +42,45 @@ export default class game {
     getPlayer() {
         return this.currentPlayer;
     }
-    
-    promotePawn(){
 
+    movePiece(piece, targetPosition){
+        if (piece instanceof pawn){
+            if (piece.can_en_passant(targetPosition, this.board)) {
+                enPassant(piece, targetPosition);
+            } else {
+                piece.move(targetPosition, this.board);
+            }
+        }
+        piece.move(targetPosition, this.board);
+        if (this.last_move[0] instanceof pawn){ 
+            this.last_move[0].movedTwoSquares = false;
+        }
+        this.last_move = { piece, targetPosition };
+    }
+
+    capture(targetPiece){
+        targetPiece.captured = true;
+        this.board[targetPiece.loc] = null;
+        // TODO: add additional capture logic
+    }
+
+    enPassant(piece, targetPosition){
+        let capPosition = targetPosition[0] + piece.loc[1];
+        
+        this.capture(this.board[capPosition]);
+    }
+    
+    endTurn(){
+        if (this.getPlayer() == this.player1){
+            this.clearSelected();
+            $('#turn').html("It's Black's Turn");
+            this.currentPlayer = this.player2;
+        }
+        else {
+            this.clearSelected();
+            $('#turn').html("It's White's Turn");
+            this.currentPlayer = this.player1;
+        }
     }
 }
 

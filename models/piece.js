@@ -10,6 +10,7 @@ export default class piece{
     captured;
     moved;
     can_move;
+    can_capture;
     color;
     divInfo;
 
@@ -51,6 +52,10 @@ export default class piece{
         this.updateOptions();
         if (this.can_move.includes(tar_loc)) this.loc = tar_loc;
         this.moved = true;
+    }
+
+    capture(tar_loc, board){
+        if(board[tar_loc] ){}
     }
 
 };

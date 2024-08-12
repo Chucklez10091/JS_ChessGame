@@ -87,18 +87,34 @@ div * {
 /* Styling to add dot to spaces where selected piece can move */
 .moveoption{
     cursor: pointer;
+    height: 100%;
+    width: 100%;
 }
 .dot{
     position: absolute;
-    width: 10px;
-    height: 10px;
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
     top: 50%;
     left: 50%;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(61, 57, 57, 0.788);
     opacity: 0.7;
-    z-index: 10;
+    z-index: 3;
+}
+.capdot{
+    position: absolute;
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(226, 28, 28, 0.788);
+    opacity: 0.5;
+    z-index: 3;
 }
 /* Styling for the chess piece container */
 .chess-piece {

@@ -10,6 +10,16 @@ export default class player{
     color;
     pieces;
 
+    constructor(col, nm, board){
+        this.color = col;
+        this.name = nm || this.color;
+        this.pieces = this.initializePieces();
+
+        for (let piece of this.pieces){
+            board[piece.loc] = piece;
+        }
+    }
+
     initializePieces(){
         let temp = [];
         
@@ -53,17 +63,7 @@ export default class player{
         temp.push(new rook(this.color, pID, xy));
 
         return temp;
-    }
-
-    constructor(col, nm, board){
-        this.color = col;
-        this.name = nm || this.color;
-        this.pieces = this.initializePieces();
-
-        for (let piece of this.pieces){
-            board[piece.loc] = piece;
-        }
-    }
+    }  
 
     getPiece(pieceID){
         for (let x of this.pieces){
