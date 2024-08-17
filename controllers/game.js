@@ -1,12 +1,13 @@
 import pawn from "../models/pawn.js";
 import player from "../models/player.js";
+import board from "../models/board.js";
 //import { piece } from "../models/piece.js";
 
 export default class game {
     player1; player2;
     selectedpiece;
     currentPlayer;
-    board = {};
+    chessBoard;
     last_move = {
         piece: null,        
         targetPosition: null  
@@ -14,17 +15,11 @@ export default class game {
     moveOptions = [];
 
     constructor(player1Name = 'White', player2Name = 'Black') {
-        for (let col = 'a'; col <= 'h'; col = String.fromCharCode(col.charCodeAt(0) + 1)) {
-            // Loop through each row ('1' to '8')
-            for (let row = 1; row <= 8; row++) {
-                let spaceID = col + row;
-                this.board[spaceID] = null;
-            }
-        }
-        this.player1 = new player('White', player1Name, this.board);
-        this.player2 = new player('Black', player2Name, this.board);
+        this.chessBoard = new board();
+        this.player1 = new player('White', player1Name, this.chessBoard);
+        this.player2 = new player('Black', player2Name, this.chessBoard);
         this.currentPlayer = this.player1;
-        console.log(this.board);
+        console.log(this.chessBoard)
     }
     
     start() {

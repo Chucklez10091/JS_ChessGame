@@ -18,7 +18,7 @@ export default class displayController{
 
         // loop through player 2 pieces
         for (let gamepiece of ex_game.player2.pieces) {
-            let loc = gamepiece.loc[0] + gamepiece.loc[1];
+            let loc = gamepiece.loc;
 
             $('#' + loc).html(gamepiece.divInfo);
             $('#' + loc).attr('chess', gamepiece.pc_id);

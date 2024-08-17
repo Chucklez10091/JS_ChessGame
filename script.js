@@ -2,12 +2,30 @@ import game from './controllers/game.js';
 import displayController from './controllers/displayController.js';
 
 $(document).ready(function() {
-  let dc = new displayController();
-  let cgame = dc.gamesetup();
+  
+  const chessboard = $('#gameboard');
+  for (let i = 63; i >= 0; i--) {
+    const row = Math.floor(i / 8);  
+    const col = 8 - (i%8);
+    const id = row * 8 + col - 1;
+      const cell = $('<div></div>').addClass('gamecell').attr('id', id);
+       // Determine row and column from id
+
+       // Apply background color based on row and column
+       if ((row + col) % 2 === 0) {
+        cell.css('background-color', '#769656'); // Dark square
+       } else {
+        cell.css('background-color', '#eeeed2'); // Light square
+       }
+      chessboard.append(cell);
+  }
 
   $('body').contextmenu(function(e) {
       e.preventDefault();
   });
+
+  let dc = new displayController();
+  let cgame = dc.gamesetup();
 
   // Set selected piece and show available moves when piece clicked
   $('.chess-piece').on('click', function() {

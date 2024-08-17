@@ -1,140 +1,69 @@
 html,
 body {
-    width: 100%;
-    height: 100%;
-    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     margin: 0;
-    font-family: sans-serif;
-}
-div * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+    background-color: #f0f0f0;
 }
 #turn{
-    max-width: 414px;
-    max-height: 30px;
-    width: 100%;
+    max-width: 600px;
+    max-height: 40px;
+    width: 90vw;
     height: 100%;
-    position: relative;
-    margin-right: 21px;
+    justify-content: center;
+    align-items: center;
     float: right;
-    border-right: 5px;
-    border: 1px solid rgba(0, 0, 0);
+    border: 2px solid rgba(0, 0, 0);
     border-style: inset;
     text-align: center;
     background: #fff;
     transition: .5s linear;
 }
-.turnheigtlight{
-    background: #5cb85c !important;
-    color: #fff;
+
+.gameboard {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    width: 90vw; /* Adjust for mobile */
+    max-width: 600px; /* Adjust for desktop */
+    aspect-ratio: 1; /* Ensures the board is always square */
+    border: 2px solid #333;
 }
-#game_frame{
-    max-height: 488px;
-    max-width: 488px;
+.gamecell {
     width: 100%;
-    height: 100%;
+    height: 0;
+    padding-bottom: 100%; /* Creates a square aspect ratio */
     position: relative;
-    margin: 20px auto;
+    box-sizing: border-box;
 }
-.gameboard{
-    max-height: 488px;
-    max-width: 488px;
-    width: 100%;
-    height: 100%;
-    position: relative;
+
+@media (min-width: 768px) {
+    .chessboard {
+        width: 60vw; /* Adjust for larger screens */
+        max-width: 700px; /* Further adjust for large desktops */
+    }
 }
-.row_id{
-    width: 100%;
-    height: 100%;
-    max-width: 50px;
-    max-height: 50px;
-    float: left;
-    margin: 1px;
-    padding: 15px 0 0 20px;
-}
-.col_id{
-    width: 100%;
-    height: 100%;
-    max-width: 50px;
-    max-height: 50px;
-    float: left;
-    margin: 1px;
-    padding: 15px 0 0 20px;
-}
-.gamecell{
-    position: relative;
-    border: 1px solid #000;
-    width: 100%;
-    height: 100%;
-    max-width: 50px;
-    max-height: 50px;
-    float: left;
-    margin: 1px;
-    transition: all 0.10s ease-in-out;
-    border-radius: 5px;
-    font-size: 30pt;
-    padding: 0 0 0 3px;
-    cursor: pointer;
-    z-index: 1;
-}
-.gamecell:hover{
-    color: #fff;
-    background: rgba(0, 164, 162, 0.85);
-    animation: 0.10s ease-in-out infinite alternate;
-}
-/* Styling to add dot to spaces where selected piece can move */
-.moveoption{
-    cursor: pointer;
-    height: 100%;
-    width: 100%;
-}
-.dot{
-    position: absolute;
-    cursor: pointer;
-    width: 14px;
-    height: 14px;
-    top: 50%;
-    left: 50%;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(61, 57, 57, 0.788);
-    opacity: 0.7;
-    z-index: 3;
-}
-.capdot{
-    position: absolute;
-    cursor: pointer;
-    width: 14px;
-    height: 14px;
-    top: 50%;
-    left: 50%;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(226, 28, 28, 0.788);
-    opacity: 0.5;
-    z-index: 3;
-}
+
 /* Styling for the chess piece container */
 .chess-piece {
-    width: 100%;          /* Ensures the div fits the cell */
-    height: 100%;         /* Same height as the cell */
+    max-width: 80%;          /* Ensures the div fits the cell */
+    height: auto;
+    max-height: 80%;         /* Same height as the cell */
     cursor: pointer;      /* Shows a pointer cursor on hover */
     position: relative;   /* Allows for drag positioning if needed */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 2;
+    align-items: center;    /* Center content vertically */
+    justify-content: center;/* Center content horizontally */
 }
 
 /* Styling for the chess piece images */
 .chess-piece img {
     max-width: 100%;      /* Scale image to fit div */
     max-height: 100%;     /* Scale image to fit div */
-    display: block;
-    margin: auto;
-}
-.black{
-    background: rgba(245, 209, 176, 0.7);
-}
-.gray{
-    background: rgba(180, 180, 180, 0.7);
+    padding-top: 10%;     /* shift down to center of cell */
 }
