@@ -12,7 +12,7 @@ export default class player{
 
     constructor(color, nm, board){
         this.color = color;
-        this.name = nm || this.color;
+        this.name = nm;
         this.pieces = this.initializePieces();
 
         for (let piece of this.pieces){
@@ -73,5 +73,9 @@ export default class player{
             if (x.pc_id == pieceID) {return x;}
         }
         return null;
+    }
+
+    getName(){
+        return this.name;
     }
 };

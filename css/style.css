@@ -37,6 +37,31 @@ body {
     padding-bottom: 100%; /* Creates a square aspect ratio */
     position: relative;
     box-sizing: border-box;
+    background-color: #eeeed2;
+}
+.gamecell.dark{
+    background-color: #769656;
+}
+
+.moveoption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    z-index: 2;
+    background-color: rgba(238, 166, 33, 0.6);
+}
+.selected-piece {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    z-index: 2;
+    background-color: rgb(231, 225, 135);
 }
 
 @media (min-width: 768px) {
@@ -56,7 +81,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 2;
+    z-index: 4;
     align-items: center;    /* Center content vertically */
     justify-content: center;/* Center content horizontally */
 }

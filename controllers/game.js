@@ -5,7 +5,7 @@ import board from "../models/board.js";
 
 export default class game {
     player1; player2;
-    selectedpiece;
+    selectedpiece = null;
     currentPlayer;
     chessBoard;
     last_move = {
@@ -27,35 +27,32 @@ export default class game {
     }
 
     // Methods for setting and clearing the selected piece
-    setSelected(pc) {
-        this.selectedpiece = pc;
-        this.selectedpiece.updateOptions(this.board);
+    setSelected(location) {
+        this.clearSelected();
+        this.selectedpiece = this.chessBoard.getPieceAt(location);
+        this.moveOptions = this.selectedpiece.getOptions(this.chessBoard);
     }
     clearSelected(){
         this.selectedpiece = null;
+        this.moveOptions = [];
+    }
+    getSelected(){
+        return this.selectedpiece;
     }
     getPlayer() {
         return this.currentPlayer;
     }
 
-    movePiece(piece, targetPosition){
-        if (piece instanceof pawn){
-            if (piece.can_en_passant(targetPosition, this.board)) {
-                enPassant(piece, targetPosition);
-            } else {
-                piece.move(targetPosition, this.board);
-            }
-        }
-        piece.move(targetPosition, this.board);
-        if (this.last_move[0] instanceof pawn){ 
-            this.last_move[0].movedTwoSquares = false;
-        }
-        this.last_move = { piece, targetPosition };
+    movePiece(targetPosition){
+        
+        this.selectedpiece.move(parseInt(targetPosition), this.chessBoard);
+        
+        return true;
     }
 
     capture(targetPiece){
         targetPiece.captured = true;
-        this.board[targetPiece.loc] = null;
+        this.chessBoard[targetPiece.loc].piece = null;
         // TODO: add additional capture logic
     }
 
@@ -68,14 +65,13 @@ export default class game {
     endTurn(){
         if (this.getPlayer() == this.player1){
             this.clearSelected();
-            $('#turn').html("It's Black's Turn");
             this.currentPlayer = this.player2;
         }
         else {
             this.clearSelected();
-            $('#turn').html("It's White's Turn");
             this.currentPlayer = this.player1;
         }
+        return this.currentPlayer.getName();
     }
 }
 

@@ -13,70 +13,51 @@ export default class pawn extends piece{
 
     updateOptions(board){
         this.can_move = [];
-        this.can_capture = [];
         let direction = (this.color == 'White') ? 1 : -1;
-        let col = this.loc[0];
-        let row = parseInt(this.loc[1]);
-
-        let nextrw = row + direction;
+        let nextmv = this.loc + direction*8;
+        if (board.getPieceAt(nextmv) === null){
+            this.can_move.push(nextmv);
+            nextmv += direction*8
+            if (!(this.moved) && 
+                board.getPieceAt(nextmv) === null){
+                    this.can_move.push(nextmv);
+            }
+        }
         
-        if (col != 'a'){
-            let ltcol = String.fromCharCode(col.charCodeAt(0) - 1);
-            let ltcap = board[(ltcol + nextrw)];
-            if (ltcap != null && ltcap.color != this.color){
-                this.can_capture.push(ltcol + nextrw);
-            }
-        }
-        if (col != 'h'){
-            let rtcol = String.fromCharCode(col.charCodeAt(0) - 1);
-            let rtcap = board[(rtcol + nextrw)];
-            if (rtcap != null && rtcap.color != this.color){
-                this.can_capture.push(rtcol + nextrw);
-            }
-        }
-
-
-        if (board[(col + nextrw)] == null){
-            this.can_move.push(col + nextrw);
-            if (!this.moved) {
-                nextrw += direction;
-                if (board[col + nextrw] === null) {
-                    this.can_move.push(col + nextrw);
-                    this.movedTwoSquares = true;    
+        // Check for capture options
+        let opp_pcs = [board.getPieceAt(this.loc + 7*direction), board.getPieceAt(this.loc + 7*direction)];
+        // for each space diagonal from pawn
+        for (let opt of opp_pcs){
+            if (opt !== null){      // piece exists
+                if (opt.color !== this.color){      // piece is opponent's piece
+                    this.can_move.push(opt.loc);
                 }
             }
         }
+
+        this.can_en_passant(board);
+        
     };
 
-    move(tar_loc, board){
-        // this.updateOptions(board);
-        if (this.can_move.includes(tar_loc)) {
-            board[this.loc] = null;
-            this.loc = tar_loc;
-            board[this.loc] = this;
-        }
-        this.moved = true;
-        
-        if (this.loc[1] == '8' || this.loc[1] == '0'){
-            // TODO: call on promotion logic
-        }
-    }
-
-    can_en_passant(tar_loc, board){
-        if (Math.abs(tar_loc[0].charCodeAt(0) - this.loc[0].charCodeAt(0)) === 1 &&
-            tar_loc[1] === this.loc[1] + (this.color === 'White' ? 1 : -1) &&
-            board[tar_loc] == null
+    can_en_passant(board){
+        const left_opt = board.getPieceAt(Math.max([this.loc - 1, 0]));
+        const right_opt = board.getPieceAt(Math.min([this.loc + 1, 63]));
+        let can_ep = false
+        if (left_opt instanceof pawn){
+            if (left_opt.color !== this.color && 
+                left_opt.movedTwoSquares &&
+                getPieceAt(left_opt.loc + (this.color === 'White' ? 1 : -1)*8) === null
             ){
-                let pawnPosition = tar_loc[0] + this.loc[1];
-                let targetPawn = board[pawnPosition];
-
-                if (targetPawn instanceof pawn 
-                    && targetPawn.color != this.color &&
-                    targetPawn.movedTwoSquares
-                ){
-                    return true;
-                }
+                this.can_move.push(left_opt.loc + (this.color === 'White' ? 1 : -1)*8);
             }
-        return false;
+        }
+        if (right_opt instanceof pawn){
+            if (right_opt.color !== this.color && 
+                right_opt.movedTwoSquares &&
+                getPieceAt(right_opt.loc + (this.color === 'White' ? 1 : -1)*8) === null
+            ){
+                this.can_move.push(right_opt.loc + (this.color === 'White' ? 1 : -1)*8);
+            }
+        }
     }
 }

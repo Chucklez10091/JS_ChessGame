@@ -1,3 +1,4 @@
+import board from "./board.js";
 /**
  * Abstract piece class
  * 
@@ -10,7 +11,6 @@ export default class piece{
     captured;
     moved;
     can_move;
-    can_capture;
     color;
     divInfo;
 
@@ -41,21 +41,31 @@ export default class piece{
         this.divInfo.append(imgElement);
     }
 
-    updateOptions(board){
+    updateOptions(cBoard){
         if (this.constructor == piece) {
             throw new Error("Method 'updateOptions()' must be implemented.");
         }
         // TODO: check for pins
     }
 
-    move(tar_loc){
-        this.updateOptions();
-        if (this.can_move.includes(tar_loc)) this.loc = tar_loc;
-        this.moved = true;
+    move(tar_loc, cBoard){
+        if (this.can_move.includes(tar_loc)){
+            cBoard.movePiece(this.loc, tar_loc);
+            this.loc = tar_loc;
+            this.moved = true;
+        }
     }
 
-    capture(tar_loc, board){
-        if(board[tar_loc] ){}
+    getOptions(cBoard){
+        this.updateOptions(cBoard);
+        return this.can_move;
+    }
+
+    capture(tar_loc, cBoard){
+        if(cBoard[tar_loc] ){}
+    }
+    getColor(){
+        return this.color;
     }
 
 };
