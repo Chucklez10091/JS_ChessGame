@@ -25,7 +25,7 @@ export default class rook extends piece{
                     }
                     break;
                 }
-                this.push(next_space);
+                this.can_move.push(next_space);
                 if ((next_space % 8 === 0 && dir === -1) || (next_space % 8 === 7 && dir === 1)){
                     break;
                 }

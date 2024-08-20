@@ -64,6 +64,15 @@ export default class board{
         }
     }
 
+    capturePieceAt(key){
+        if (key in this.spaces && this.getPieceAt(key) !== null){
+            this.capturedPieces.push(this.getPieceAt(key));
+            this.getPieceAt(key).captured = true;
+            // remove the piece from the board space
+            this.spaces[key].piece = null;
+        }
+    }
+
     // Method to get the space code for a specific integer key
     getSpaceCode(key) {
         if (key in this.spaces) {

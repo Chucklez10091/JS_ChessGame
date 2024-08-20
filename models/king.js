@@ -29,4 +29,8 @@ export default class king extends piece{
         }
         
     };
+
+    allowCastleAt(targetLocation){
+        this.can_move.push(targetLocation);
+    }
 }

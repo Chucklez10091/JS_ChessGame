@@ -1,3 +1,4 @@
+import pawn from "../models/pawn.js";
 import game from "./game.js";
 
 export default class displayController{
@@ -65,7 +66,7 @@ export default class displayController{
         });
     }
 
-    updateLocation(targetLoc){
+    movePiece(targetLoc){
         let x = this._game.movePiece(targetLoc.attr('id'));
         if (x){
             let $sourceCell = $(document.querySelector(`.selected-piece`).parentElement);
@@ -76,10 +77,63 @@ export default class displayController{
             $destCell.append($chessPiece);
             $destCell.attr('chess', $sourceCell.attr('chess'));
             $sourceCell.attr('chess', 'null');
+
             this.clearDots();
 
             this.endTurn();
         }
+    }
+
+    capturePiece(targetLoc){
+        let x = this._game.movePiece(targetLoc.attr('id'));
+        if (x){
+            let $sourceCell = $(document.querySelector(`.selected-piece`).parentElement);
+            let $destCell = $(targetLoc);
+
+            $destCell.find('.chess-piece').remove();
+            let $chessPiece = $sourceCell.find('.chess-piece');
+
+            $destCell.append($chessPiece);
+            $destCell.attr('chess', $sourceCell.attr('chess'));
+            $sourceCell.attr('chess', 'null');
+
+            this.clearDots();
+
+            this.endTurn();
+        }
+    }
+
+    isEnPassant(targetLoc){
+        let tar_loc = parseInt(targetLoc.attr('id'));
+        if (this._game.last_move.piece instanceof pawn){
+            return this._game.last_move.piece.isEnPassant(tar_loc);
+        }
+    }
+
+    enPassantCaptureCell(){
+        return this._game.last_move.targetPosition;
+    }
+
+    isCastling(targetLoc){
+        const tar_loc = parseInt(targetLoc.attr('id'));
+        return Math.abs(tar_loc - this._game.getSelected().loc) === 2;
+    }
+
+    castleRook(targetLoc){
+        let tar_loc = parseInt(targetLoc.attr('id'));
+        let direction = tar_loc - this._game.selectedpiece.loc;
+        let rookCell = (direction > 0) ? tar_loc+1 : tar_loc-2;
+        
+        let $sourceCell = $('#' + rookCell);
+        console.log($sourceCell);
+        let $destCell = (direction > 0) ? $('#' + (tar_loc-1)) : $('#' + (tar_loc+1));
+        console.log($destCell);
+
+        let $chessPiece = $sourceCell.find('.chess-piece');
+
+            $destCell.append($chessPiece);
+            $destCell.attr('chess', $sourceCell.attr('chess'));
+            $sourceCell.attr('chess', 'null');
     }
 
     endTurn(){

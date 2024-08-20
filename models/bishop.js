@@ -25,8 +25,8 @@ export default class bishop extends piece{
                     }
                     break;
                 }
-                this.push(next_space);
-                if ((next_space % 8 === 0 && [7, -9].find(dir)) || (next_space % 8 === 7 && [-7,9].find(dir))){
+                this.can_move.push(next_space);
+                if ((next_space % 8 === 0 && [7, -9].includes(dir)) || (next_space % 8 === 7 && [-7,9].includes(dir))){
                     break;
                 }
                 next_space += dir;
