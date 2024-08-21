@@ -14,7 +14,7 @@ export default class rook extends piece{
         const is_edge = this.loc % 8;
         for (let dir of directions){
             if ((is_edge === 0 && dir === -1) || (is_edge === 7 && dir === 1)){
-                break;
+                continue;
             }
             let next_space = this.loc + dir;
             while(next_space >= 0 && next_space < 64){
@@ -32,5 +32,6 @@ export default class rook extends piece{
                 next_space += dir;
             }
         }
+        
     };
 }

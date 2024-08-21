@@ -14,7 +14,7 @@ export default class bishop extends piece{
         const is_edge = this.loc % 8;
         for (let dir of directions){
             if ((is_edge === 0 && [7, -9].find(dir)) || (is_edge === 7 && [-7,9].find(dir))){
-                break;
+                continue;
             }
             let next_space = this.loc + dir;
             while(next_space >= 0 && next_space < 64){

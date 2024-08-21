@@ -80,7 +80,8 @@ export default class displayController{
 
             this.clearDots();
 
-            this.endTurn();
+            this.swapTurn();
+            
         }
     }
 
@@ -99,7 +100,7 @@ export default class displayController{
 
             this.clearDots();
 
-            this.endTurn();
+            this.swapTurn();
         }
     }
 
@@ -125,9 +126,7 @@ export default class displayController{
         let rookCell = (direction > 0) ? tar_loc+1 : tar_loc-2;
         
         let $sourceCell = $('#' + rookCell);
-        console.log($sourceCell);
         let $destCell = (direction > 0) ? $('#' + (tar_loc-1)) : $('#' + (tar_loc+1));
-        console.log($destCell);
 
         let $chessPiece = $sourceCell.find('.chess-piece');
 
@@ -136,9 +135,11 @@ export default class displayController{
             $sourceCell.attr('chess', 'null');
     }
 
-    endTurn(){
+    swapTurn(){
         const name = this._game.endTurn();
-        console.log(this._game.chessBoard);
+
         $('#turn').html("It's " + name + "'s Turn");
+
+        this._game.startTurn();
     }
 }

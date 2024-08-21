@@ -9,6 +9,9 @@ export default class player{
     name;
     color;
     pieces;
+    king;
+    opponent;
+    in_check;
 
     constructor(color, nm, board){
         this.color = color;
@@ -51,7 +54,8 @@ export default class player{
         
         pID = (this.color == 'White') ? "w_k" : "b_k";
         xy = (this.color == 'White') ? 4 : 60;
-        temp.push(new king(this.color, pID, xy));
+        this.king = new king(this.color, pID, xy);
+        temp.push( this.king );
 
         pID = (this.color == 'White') ? "w_b_f" : "b_b_f";
         xy = (this.color == 'White') ? 5 : 61;
@@ -67,6 +71,10 @@ export default class player{
 
         return temp;
     }  
+
+    setOpponent(opponent){
+        if (opponent instanceof player) this.opponent = opponent;
+    }
 
     getPiece(pieceID){
         for (let x of this.pieces){

@@ -13,8 +13,8 @@ export default class queen extends piece{
         const directions = [-9, -8, -7, -1, 1, 7, 8, 9];
         const is_edge = this.loc % 8;
         for (let dir of directions){
-            if ((is_edge === 0 && [7, -1, -9].find(dir)) || (is_edge === 7 && [-7, 1, 9].find(dir))){
-                break;
+            if ((is_edge === 0 && [7, -1, -9].includes(dir)) || (is_edge === 7 && [-7, 1, 9].includes(dir))){
+                continue;
             }
             let next_space = this.loc + dir;
             while(next_space >= 0 && next_space < 64){

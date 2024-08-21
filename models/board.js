@@ -60,17 +60,23 @@ export default class board{
         // if a piece exists at the key
         if (key in this.spaces && this.getPieceAt(key) !== null){
             // remove the piece from the board space
+            const temp = this.spaces[key].piece;
             this.spaces[key].piece = null;
+            return temp;
         }
+        return null;
     }
 
     capturePieceAt(key){
         if (key in this.spaces && this.getPieceAt(key) !== null){
-            this.capturedPieces.push(this.getPieceAt(key));
-            this.getPieceAt(key).captured = true;
+            let temp = this.getPieceAt(key)
+            this.capturedPieces.push(temp);
+            temp.captured = true;
             // remove the piece from the board space
             this.spaces[key].piece = null;
+            return temp;
         }
+        return null;
     }
 
     // Method to get the space code for a specific integer key
