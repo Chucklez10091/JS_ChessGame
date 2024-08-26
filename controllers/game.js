@@ -167,14 +167,15 @@ export default class game {
             //// Move the piece ////
             this.selectedpiece.move(tar_loc, this.chessBoard);
 
+            // // Check pawn promotion //
+            // if (this.selectedpiece instanceof pawn && 
+            //     ([0, 7].includes(Math.floor(this.selectedpiece.loc / 8)))){
+            //         this.promotePawn(this.selectedpiece);
+            // }
+
             //// Clean up ////
 
-            //scan for checks on opponent//
-            this.currentPlayer.opponent.in_check = this.scanChecks(this.currentPlayer, this.cursoryScan(this.currentPlayer));
-            // reset double pawn push flags
-            if (this.last_move.piece instanceof pawn) this.last_move.piece.setTwoSquares(-1);
-            // update last move
-            this.last_move = {piece: this.selectedpiece, targetPosition: tar_loc};
+            
 
             return true;
         }
@@ -226,7 +227,23 @@ export default class game {
         this.capture(capPosition);
     }
 
+    promotePawn(location, piece){
+        // capture the pawn on the board
+        this.chessBoard.capturePieceAt(location);
+        // replace the pawn in the player's piece list
+        this.selectedpiece = this.currentPlayer.promotePawn(this.selectedpiece, piece);
+        // add new piece to the board
+        this.chessBoard.setPieceTo(this.selectedpiece, this.selectedpiece.loc);
+        // TODO: remove new piece type from captured pieces list if present
+    }
+
     endTurn(){
+        //scan for checks on opponent//
+        this.currentPlayer.opponent.in_check = this.scanChecks(this.currentPlayer, this.cursoryScan(this.currentPlayer));
+        // reset double pawn push flags
+        if (this.last_move.piece instanceof pawn) this.last_move.piece.setTwoSquares(-1);
+        // update last move
+        this.last_move = {piece: this.selectedpiece, targetPosition: this.selectedpiece.loc};
         // TODO: add move to pgn
         
         const temp = this.currentPlayer;

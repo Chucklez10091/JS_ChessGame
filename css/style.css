@@ -5,7 +5,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: #080404;
 }
 #turn{
     max-width: 600px;
@@ -69,6 +69,29 @@ body {
         width: 60vw; /* Adjust for larger screens */
         max-width: 700px; /* Further adjust for large desktops */
     }
+}
+
+/* Styling for promotion piece selection */
+.promotion-select {
+    max-width: 80%;          /* Ensures the div fits the cell */
+    height: auto;
+    max-height: 80%;         /* Same height as the cell */
+    cursor: pointer;      /* Shows a pointer cursor on hover */
+    position: relative;   /* Allows for drag positioning if needed */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    align-items: center;    /* Center content vertically */
+    justify-content: center;/* Center content horizontally */
+}
+
+/* Styling for the chess piece images */
+.promotion-select img {
+    max-width: 100%;      /* Scale image to fit div */
+    max-height: 100%;     /* Scale image to fit div */
+    padding-top: 10%;     /* shift down to center of cell */
+    cursor: pointer;
 }
 
 /* Styling for the chess piece container */

@@ -13,7 +13,7 @@ export default class bishop extends piece{
         const directions = [-9, -7, 7, 9];
         const is_edge = this.loc % 8;
         for (let dir of directions){
-            if ((is_edge === 0 && [7, -9].find(dir)) || (is_edge === 7 && [-7,9].find(dir))){
+            if ((is_edge === 0 && [7, -9].find(dir)) || (is_edge === 7 && [-7,9].includes(dir))){
                 continue;
             }
             let next_space = this.loc + dir;

@@ -2,7 +2,7 @@ import displayController from './controllers/displayController.js';
 import king from './models/king.js';
 import pawn from './models/pawn.js';
 
-$(document).ready(function() {
+$(document).ready(async function() {
   
   const chessboard = $('#gameboard');
   for (let i = 63; i >= 0; i--) {
@@ -28,7 +28,7 @@ $(document).ready(function() {
     if ($clickedCell.find('.moveoption').length > 0) {
       // Opponent's piece already occupies square
       if ($clickedCell.find('.chess-piece').length > 0) {
-        dc.capturePiece($clickedCell);
+        var legal_move = dc.capturePiece($clickedCell);
       }
       else {
         // Check for specialized moves
@@ -41,37 +41,37 @@ $(document).ready(function() {
           // Execute castle logic
           dc.castleRook($clickedCell);
         }
-        dc.movePiece($clickedCell);
+        var legal_move = dc.movePiece($clickedCell);
+      }
+
+      if (legal_move){
+
+        dc.executeLegalMove($clickedCell);
+        
       }
     }
 
+    else if ($clickedCell.find('.promotion-select').length > 0){
+      // Do Nothing
+    }
+
     // If a piece is clicked (and it's the current player's piece)
-    else if ($clickedCell.find('.chess-piece').length > 0) {
+    else if ($clickedCell.find('.chess-piece').length > 0 &&
+      $clickedCell.find('.promotion-select').length === 0) {
       let selectedPiece = dc.getPieceAt($clickedCell);
 
       if (selectedPiece.getColor() === dc._game.getPlayer().color) {
+        console.log('clear dots2');
         dc.clearDots(); // Clear any previous move options
         dc.pieceSelected($clickedCell); // Select the clicked piece
       }
     }
 
     else{
+      console.log('clear dots1');
       dc.clearDots();
     }
   });
-  /* $('.gamecell').on('click', '.moveoption', function() {
-    dc.updateLocation($(this.closest('.gamecell')));
-  });
-
-  // Set selected piece and show available moves when piece clicked
-  $('.gamecell').on('click', '.chess-piece',function() {
-    
-    if (dc.getPieceAt($(this.closest('.gamecell'))).getColor() === dc._game.getPlayer().color){
-      dc.clearDots();
-      dc.pieceSelected($(this.closest('.gamecell')));
-    }
-  }); */
-
   
 
 });

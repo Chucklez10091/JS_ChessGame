@@ -78,11 +78,10 @@ export default class displayController{
             $destCell.attr('chess', $sourceCell.attr('chess'));
             $sourceCell.attr('chess', 'null');
 
-            this.clearDots();
-
-            this.swapTurn();
+            return true;
             
         }
+        return false;
     }
 
     capturePiece(targetLoc){
@@ -98,10 +97,9 @@ export default class displayController{
             $destCell.attr('chess', $sourceCell.attr('chess'));
             $sourceCell.attr('chess', 'null');
 
-            this.clearDots();
-
-            this.swapTurn();
+            return true;
         }
+        return false;
     }
 
     isEnPassant(targetLoc){
@@ -135,7 +133,58 @@ export default class displayController{
             $sourceCell.attr('chess', 'null');
     }
 
+    async promotion($clickedCell){
+        let direction = this._game.currentPlayer === this._game.player1 ? -8 : 8;
+        let color = this._game.currentPlayer.color.toLowerCase();
+        let location = parseInt($clickedCell.attr('id'));
+
+        let pieceChoice = ['queen', 'bishop', 'knight', 'rook'];
+        
+        for (let i = 0; i < 4; i++){
+            let divLabel = $('<div>')
+                .addClass('promotion-select')
+                .attr('choice', pieceChoice[i]);
+            divLabel.append($('<img>').attr('src', '../images/' + color + '-' + pieceChoice[i] + '.png'));
+            $('#' + (location + i * direction)).html(divLabel);
+        }
+
+        console.log(this._game.selectedpiece);
+
+        const chosen_piece = await new Promise((resolve) => {
+            $('.promotion-select').on('click', 'img', function () {
+                resolve($(this).attr('choice'));  // Resolve the promise with the clicked image
+            });
+        });
+
+        console.log(this._game.selectedpiece);
+
+        this._game.promotePawn(chosen_piece);
+
+        const elements = document.querySelectorAll(`.promotion-select`);
+
+        elements.forEach(pc =>{
+            pc.remove('promotion-select');
+        });
+
+        $('#' + location).html(this._game.selectedpiece.divInfo);
+        $('#' + location).attr('chess', this._game.selectedpiece.pc_id);
+
+    }
+
+    async executeLegalMove($clickedCell){
+        // check pawn promotion
+        let row = Math.floor($clickedCell.attr('id') / 8);
+        if ([0,7].includes(row) && (this._game.selectedpiece instanceof pawn)) {
+          await this.promotion($clickedCell);
+        }
+        
+        // Swap turns
+        this.swapTurn();
+    }
+
     swapTurn(){
+        this.clearDots();
+
         const name = this._game.endTurn();
 
         $('#turn').html("It's " + name + "'s Turn");

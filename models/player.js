@@ -86,4 +86,34 @@ export default class player{
     getName(){
         return this.name;
     }
+
+    promotePawn(pawn_to_promote, pieceType){
+        // initialize new piece
+        let promoted_piece;
+        switch(pieceType){
+            case 'queen':
+                promoted_piece = new queen(this.color, pawn_to_promote.pieceID, pawn_to_promote.loc);
+                break;
+            case 'knight':
+                promoted_piece = new knight(this.color, pawn_to_promote.pieceID, pawn_to_promote.loc);
+                break;
+            case 'bishop':
+                promoted_piece = new bishop(this.color, pawn_to_promote.pieceID, pawn_to_promote.loc);
+                break;
+            case 'rook':
+                promoted_piece = new rook(this.color, pawn_to_promote.pieceID, pawn_to_promote.loc);
+                break;
+            default: 
+                promoted_piece = new queen(this.color, pawn_to_promote.pieceID, pawn_to_promote.loc);
+                break;
+        }
+        // remove pawn from players pieces
+        this.pieces = this.pieces.filter( (pc) => {
+            return pc !== pawn_to_promote;
+        });
+        // Add new piece to pieces list
+        this.pieces.push(promoted_piece);
+        
+        return promoted_piece;
+    }
 };
