@@ -35,7 +35,7 @@ export default class displayController{
         this.addDots();
     }
     getPieceAt(div){
-        let location = div.attr('id');
+        let location = parseInt(div.attr('id'));
         return this._game.chessBoard.getPieceAt(location);
     }
 
@@ -190,5 +190,13 @@ export default class displayController{
         $('#turn').html("It's " + name + "'s Turn");
 
         this._game.startTurn();
+
+        if (this._game.result !== "0"){
+            this.endGame(this._game.result);
+        }
+    }
+
+    endGame(result){
+        $('#turn').html(result);
     }
 }

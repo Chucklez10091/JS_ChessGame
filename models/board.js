@@ -32,6 +32,7 @@ export default class board{
         if (key in this.spaces) {
             return this.spaces[key].piece;
         }
+        
         return null; // Return null if no piece is found
     }
 

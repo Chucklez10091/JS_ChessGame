@@ -15,6 +15,7 @@ export default class game {
         targetPosition: null  
     };
     moveOptions = [];
+    result = "0";
 
     constructor(player1Name = 'White', player2Name = 'Black') {
         this.chessBoard = new board();
@@ -32,6 +33,7 @@ export default class game {
 
     // Methods for setting and clearing the selected piece
     setSelected(location) {
+        console.log('setSelected()');
         this.clearSelected();
         this.selectedpiece = this.chessBoard.getPieceAt(location);
         
@@ -39,11 +41,20 @@ export default class game {
     }
 
     startTurn(){
-        this.scanMoves(this.currentPlayer);
-        console.log(this.currentPlayer.color, 'is in check: ', this.currentPlayer.in_check);
+        console.log('startTurn()');
+        const moves = this.scanMoves(this.currentPlayer);
+        console.log(moves);
+        if (moves.length < 1){
+            let game_result = this.currentPlayer.in_check ? (this.currentPlayer.opponent.color + ` wins by checkmate!`) : 'Stalemate!';
+            this.endGame(game_result);
+        }
+        else{
+            console.log(this.currentPlayer.color, 'is in check: ', this.currentPlayer.in_check);
+        }
     }
 
     clearSelected(){
+        console.log('clearSelected');
         this.selectedpiece = null;
         this.moveOptions = [];
     }
@@ -57,6 +68,7 @@ export default class game {
     }
 
     simulate(piece, destLocation){
+        console.log('simulate()', piece.pc_id);
         const originalPiece = this.chessBoard.removePieceAt(destLocation);
         const sourceLocation = piece.loc;
 
@@ -86,7 +98,7 @@ export default class game {
     }
     
     scanMoves(_player){
-        
+        console.log('scanMoves()');
         let temp = [];
         for (let piece of _player.pieces){
             if (piece instanceof king && this.currentPlayer === _player){
@@ -96,10 +108,11 @@ export default class game {
             else{
                 piece.getOptions(this.chessBoard);
             }
-            
+            console.log(piece.pc_id, piece.can_move);
             piece.can_move = piece.can_move.filter( (move) => {
                 return this.simulate(piece, move);
             });
+            
         
             temp = temp.concat(piece.can_move);
         }
@@ -107,6 +120,7 @@ export default class game {
     }
 
     cursoryScan(_player){
+        console.log('cursoryScan()');
         let temp = [];
         for (let piece of _player.pieces){
 
@@ -118,7 +132,7 @@ export default class game {
     }
 
     scanChecks(player, visiblesquares){
-            
+        console.log('scanChecks()');
         if (visiblesquares.includes(player.opponent.king.loc)){
             return true;
         }
@@ -126,6 +140,7 @@ export default class game {
     }
 
     movePiece(targetPosition){
+        console.log('MovePiece()');
         const tar_loc = parseInt(targetPosition);
         
         if (this.moveOptions.includes(tar_loc)){ 
@@ -183,7 +198,7 @@ export default class game {
     }
 
     canCastle(){
-        
+        console.log('canCastle()');
         if (this.currentPlayer.king.moved){
             return false;
         }
@@ -214,6 +229,7 @@ export default class game {
     }
 
     capture(targetLocation){
+        console.log('capture()');
         const captured_piece = this.chessBoard.capturePieceAt(targetLocation);
         this.currentPlayer.opponent.pieces = this.currentPlayer.opponent.pieces.filter( (pc) => {
             return pc !== captured_piece
@@ -222,6 +238,7 @@ export default class game {
     }
 
     enPassant(targetPosition){
+        console.log('enPassant()');
         let capPosition = targetPosition + (this.selectedpiece.color === 'White' ? -8 : 8);
         
         this.capture(capPosition);
@@ -238,6 +255,7 @@ export default class game {
     }
 
     endTurn(){
+        console.log('endturn()');
         //scan for checks on opponent//
         this.currentPlayer.opponent.in_check = this.scanChecks(this.currentPlayer, this.cursoryScan(this.currentPlayer));
         // reset double pawn push flags
@@ -252,7 +270,9 @@ export default class game {
         return this.currentPlayer.getName();
     }
 
-    endGame(){
+    endGame(result){
+        this.result = result;
+        this.currentPlayer = null;
         // TODO: set game over flag and perform cleanup (save pgn file, Display winner, etc.)
     }
 }

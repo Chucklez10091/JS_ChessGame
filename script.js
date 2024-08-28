@@ -23,6 +23,7 @@ $(document).ready(async function() {
 
   $('.gamecell').on('click', function() {
     let $clickedCell = $(this);
+    console.log($clickedCell.attr('id'));
 
     // If a piece is selected and a move option is clicked
     if ($clickedCell.find('.moveoption').length > 0) {
@@ -58,6 +59,7 @@ $(document).ready(async function() {
     // If a piece is clicked (and it's the current player's piece)
     else if ($clickedCell.find('.chess-piece').length > 0 &&
       $clickedCell.find('.promotion-select').length === 0) {
+        
       let selectedPiece = dc.getPieceAt($clickedCell);
 
       if (selectedPiece.getColor() === dc._game.getPlayer().color) {

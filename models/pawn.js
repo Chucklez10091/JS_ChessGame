@@ -12,12 +12,13 @@ export default class pawn extends piece{
     }
 
     updateOptions(board){
+        console.log('updateOptions()', this.pc_id);
         this.can_move = [];
-        let direction = (this.color == 'White') ? 1 : -1;
-        let nextmv = this.loc + direction*8;
+        let direction = (this.color == 'White') ? 8 : -8;
+        let nextmv = this.loc + direction;
         if (board.getPieceAt(nextmv) === null){
             this.can_move.push(nextmv);
-            nextmv += direction*8
+            nextmv += direction
             if (!(this.moved) && 
                 board.getPieceAt(nextmv) === null){
                     this.can_move.push(nextmv);
@@ -25,7 +26,9 @@ export default class pawn extends piece{
         }
         
         // Check for capture options
-        let opp_pcs = [board.getPieceAt(this.loc + 7*direction), board.getPieceAt(this.loc + 9*direction)];
+        let opp_pcs = [];
+        if (this.loc % 8 < 7) opp_pcs.push(board.getPieceAt(this.loc + 1 + direction));
+        if (this.loc % 8 > 0) opp_pcs.push(board.getPieceAt(this.loc - 1 + direction));
         // for each space diagonal from pawn
         for (let opt of opp_pcs){
             if (opt !== null){      // piece exists
@@ -56,21 +59,22 @@ export default class pawn extends piece{
     }
 
     can_en_passant(board){
+        //console.log('can_en_passant()');
 
         const left_opt = board.getPieceAt(this.loc - 1); // piece to the left of this pawn
         const right_opt = board.getPieceAt(this.loc + 1); // piece to the right of this pawn
 
-        if (left_opt instanceof pawn){
-            if (left_opt.color !== this.color && 
-                left_opt.movedTwoSquares &&
+        if (left_opt instanceof pawn && left_opt.color !== this.color){
+            console.log('left');
+            if (left_opt.movedTwoSquares &&
                 board.getPieceAt(left_opt.loc + (this.color === 'White' ? 1 : -1)*8) === null
             ){
                 this.can_move.push(left_opt.loc + (this.color === 'White' ? 1 : -1)*8);
             }
         }
-        if (right_opt instanceof pawn){
-            if (right_opt.color !== this.color && 
-                right_opt.movedTwoSquares &&
+        if (right_opt instanceof pawn && right_opt.color !== this.color){
+            console.log('right');
+            if (right_opt.movedTwoSquares &&
                 board.getPieceAt(right_opt.loc + (this.color === 'White' ? 1 : -1)*8) === null
             ){
                 this.can_move.push(right_opt.loc + (this.color === 'White' ? 1 : -1)*8);
